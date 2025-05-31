@@ -67,30 +67,66 @@ function MyIssues() {
   // Sample issues data
   const issues = [
     {
+      id: 1,
       title: "Pothole on Main Street",
+      description: "Large pothole causing traffic issues",
       status: "Open",
-      department: "Public Works",
+      department: "Transport",
       date: "2024-03-15",
-      description: "Large pothole causing traffic issues and potential damage to vehicles.",
       priority: "High"
     },
     {
-      title: "Street Light Outage",
+      id: 2,
+      title: "Garbage Collection Delay",
+      description: "Regular collection missed in North District",
       status: "In Progress",
-      department: "Utilities",
+      department: "Sanitation",
       date: "2024-03-14",
-      description: "Multiple street lights not working in the downtown area.",
       priority: "Medium"
     },
     {
-      title: "Garbage Collection Delay",
+      id: 3,
+      title: "Street Light Outage",
+      description: "Multiple street lights not working",
       status: "Resolved",
-      department: "Sanitation",
+      department: "Infrastructure",
       date: "2024-03-13",
-      description: "Regular garbage collection was delayed by 2 days.",
-      priority: "Low"
+      priority: "High"
     }
   ];
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'Open':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'In Progress':
+        return 'bg-blue-100 text-blue-800';
+      case 'Resolved':
+        return 'bg-green-100 text-green-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case 'High':
+        return 'bg-red-100 text-red-800';
+      case 'Medium':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'Low':
+        return 'bg-green-100 text-green-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const filteredIssues = issues.filter(issue => {
+    const matchesFilter = activeTab === 'all' || issue.status.toLowerCase() === activeTab.toLowerCase();
+    const matchesSearch = issue.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         issue.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesFilter && matchesSearch;
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -99,7 +135,7 @@ function MyIssues() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">My Issues</h1>
           <p className="text-lg text-blue-100 max-w-3xl">
-            Track and manage all your reported city issues in one place
+            Track and manage your reported issues
           </p>
         </div>
       </div>
@@ -141,7 +177,7 @@ function MyIssues() {
                   : 'bg-white text-gray-700 hover:bg-gray-50'
               }`}
             >
-              All Issues
+              All
             </button>
             <button
               onClick={() => setActiveTab('open')}
@@ -167,33 +203,58 @@ function MyIssues() {
         </div>
 
         {/* Issues Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {issues.map((issue, index) => (
-            <IssueCard key={index} {...issue} />
+        <div className="grid grid-cols-1 gap-6">
+          {filteredIssues.map(issue => (
+            <div key={issue.id} className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-all duration-300 border border-gray-100">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-800 mb-2">{issue.title}</h2>
+                  <p className="text-gray-600">{issue.description}</p>
+                </div>
+                <div className="flex gap-2">
+                  <span className={`px-3 py-1 rounded-full text-sm ${getStatusColor(issue.status)}`}>
+                    {issue.status}
+                  </span>
+                  <span className={`px-3 py-1 rounded-full text-sm ${getPriorityColor(issue.priority)}`}>
+                    {issue.priority}
+                  </span>
+                </div>
+              </div>
+              
+              <div className="flex justify-between items-center text-sm text-gray-500">
+                <span>Department: {issue.department}</span>
+                <span>Date: {issue.date}</span>
+              </div>
+            </div>
           ))}
         </div>
 
-        {/* Report New Issue Button */}
-        <div className="mt-12 text-center">
-          <Link
-            to="/issues/report"
-            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-lg font-medium hover:from-teal-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
-          >
-            <svg
-              className="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+        {/* Quick Actions */}
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-all duration-300">
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">Report New Issue</h3>
+            <p className="text-gray-600 mb-4">Found a problem that needs attention? Report it here.</p>
+            <Link 
+              to="/report-issue"
+              className="text-teal-600 hover:text-teal-700 font-medium text-sm flex items-center group"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-            Report New Issue
-          </Link>
+              Report Issue
+              <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-all duration-300">
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">Issue Statistics</h3>
+            <p className="text-gray-600 mb-4">View detailed statistics about your reported issues.</p>
+            <button className="text-teal-600 hover:text-teal-700 font-medium text-sm flex items-center group">
+              View Statistics
+              <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>

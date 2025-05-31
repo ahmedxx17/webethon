@@ -11,6 +11,11 @@ import MyIssues from './pages/MyIssues'
 import Notifications from './pages/Notifications'
 import Voting from './pages/Voting'
 import AdminDashboard from './pages/AdminDashboard'
+import ViewProposals from './pages/ViewProposals'
+import Vote from './pages/Vote'
+import VotingResults from './pages/VotingResults'
+import Department from './pages/Department'
+import ReportIssue from './pages/ReportIssue'
 
 // Import your pages here
 import HomePage from './pages/HomePage'
@@ -35,6 +40,11 @@ function App() {
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/voting" element={<Voting />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/proposals/view" element={<ViewProposals />} />
+            <Route path="/proposals/vote" element={<Vote />} />
+            <Route path="/proposals/results" element={<VotingResults />} />
+            <Route path="/departments" element={<Department />} />
+            <Route path="/report-issue" element={<ReportIssue />} />
           </Routes>
         </main>
       </div>

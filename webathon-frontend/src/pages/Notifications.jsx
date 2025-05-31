@@ -6,27 +6,29 @@ const NotificationCard = ({ title, type, time, message, isRead }) => {
   const getTypeColor = (type) => {
     switch (type.toLowerCase()) {
       case 'issue':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-gradient-to-r from-blue-500 to-blue-600 text-white';
       case 'proposal':
-        return 'bg-purple-100 text-purple-800';
+        return 'bg-gradient-to-r from-purple-500 to-purple-600 text-white';
       case 'vote':
-        return 'bg-green-100 text-green-800';
+        return 'bg-gradient-to-r from-teal-500 to-blue-600 text-white';
       case 'system':
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gradient-to-r from-gray-500 to-gray-600 text-white';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gradient-to-r from-gray-500 to-gray-600 text-white';
     }
   };
 
   return (
-    <div className={`bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-all duration-300 ${!isRead ? 'border-l-4 border-l-teal-500' : ''}`}>
+    <div className={`bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-all duration-300 ${
+      !isRead ? 'border-l-4 border-l-teal-500' : ''
+    }`}>
       <div className="flex justify-between items-start mb-4">
         <div className="flex items-center gap-3">
           <span className={`px-3 py-1 text-xs font-medium rounded-full ${getTypeColor(type)}`}>
             {type}
           </span>
           {!isRead && (
-            <span className="h-2 w-2 rounded-full bg-teal-500"></span>
+            <span className="h-2 w-2 rounded-full bg-gradient-to-r from-teal-500 to-blue-600 animate-pulse"></span>
           )}
         </div>
         <span className="text-sm text-gray-500">{time}</span>
@@ -34,9 +36,9 @@ const NotificationCard = ({ title, type, time, message, isRead }) => {
       <h3 className="text-lg font-semibold text-gray-800 mb-2">{title}</h3>
       <p className="text-gray-600 mb-4">{message}</p>
       <div className="flex justify-end">
-        <button className="text-teal-600 hover:text-teal-700 font-medium text-sm flex items-center">
+        <button className="text-teal-600 hover:text-teal-700 font-medium text-sm flex items-center group">
           View Details
-          <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </button>
@@ -102,7 +104,7 @@ function Notifications() {
               <input
                 type="text"
                 placeholder="Search notifications..."
-                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -124,30 +126,30 @@ function Notifications() {
           <div className="flex gap-2">
             <button
               onClick={() => setActiveTab('all')}
-              className={`px-4 py-2 rounded-lg font-medium ${
+              className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                 activeTab === 'all'
-                  ? 'bg-teal-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-50'
+                  ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white shadow-md'
+                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow-sm'
               }`}
             >
               All
             </button>
             <button
               onClick={() => setActiveTab('unread')}
-              className={`px-4 py-2 rounded-lg font-medium ${
+              className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                 activeTab === 'unread'
-                  ? 'bg-teal-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-50'
+                  ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white shadow-md'
+                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow-sm'
               }`}
             >
               Unread
             </button>
             <button
               onClick={() => setActiveTab('read')}
-              className={`px-4 py-2 rounded-lg font-medium ${
+              className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                 activeTab === 'read'
-                  ? 'bg-teal-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-50'
+                  ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white shadow-md'
+                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow-sm'
               }`}
             >
               Read
@@ -165,7 +167,7 @@ function Notifications() {
         {/* Mark All as Read Button */}
         <div className="mt-12 text-center">
           <button
-            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-lg font-medium hover:from-teal-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-lg font-medium hover:from-teal-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
             <svg
               className="w-5 h-5 mr-2"
